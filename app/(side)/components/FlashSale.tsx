@@ -1,5 +1,22 @@
+"use client";
+import { useEffect, useState } from "react";
 import ProductCart from "./ProductCard/ProductCard"
+import { GetAllProductService } from "@/app/Services/ProductService"
+interface Product {
+    Id: number,
+    ProductName: string
+}
 export default function FlashSale() {
+    const [product, setProduct] = useState<Product>();
+
+    const fetchProduct = async () => {
+        const data = await GetAllProductService();
+        setProduct(data.data);
+    }
+    useEffect(() => {
+        fetchProduct()
+    }, [])
+    console.log("Dữ liệu sản phẩm ", product)
     return (
         <>
             <div className="w-full mt-[50px]">

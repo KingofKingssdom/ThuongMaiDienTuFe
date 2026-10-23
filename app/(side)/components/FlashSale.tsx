@@ -1,4 +1,4 @@
-
+import ProductCart from "./ProductCard/ProductCard"
 export default function FlashSale() {
     return (
         <>
@@ -10,7 +10,7 @@ export default function FlashSale() {
                     </div>
                     <div className="bg-red-600 w-[100%] mx-auto rounded-[20px] md:rounded-[30px] h-[400px] border-5 border-solid border-[#f2d79f] overflow-hidden">
                         <div>
-
+                            <ProductCart />
                         </div>
                     </div>
                 </div>

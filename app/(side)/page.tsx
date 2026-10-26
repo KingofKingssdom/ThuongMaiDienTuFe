@@ -1,6 +1,7 @@
 import HomeSidebar from "./components/HomeSidebar"
 import HomeMainContent from "./components/HomeMainContent"
 import FlashSale from "./components/FlashSale"
+import ProductFeature from "./components/ProductFeature"
 export default function Home() {
     return (
         <>
@@ -19,6 +20,9 @@ export default function Home() {
                         </div>
                     </div>
                     <FlashSale />
+                    <div>
+                        <ProductFeature />
+                    </div>
                 </div>
 
             </div>

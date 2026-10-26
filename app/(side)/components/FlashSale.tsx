@@ -24,7 +24,6 @@ export default function FlashSale() {
     useEffect(() => {
         fetchProduct()
     }, [])
-    console.log("Dữ liệu sản phẩm ", product)
     return (
         <>
             <div className="w-full mt-[50px]">

@@ -12,9 +12,13 @@ export async function GetAllProductService() {
     }
 }
 
-export async function GetAllProductByIsFeature() {
+export async function GetAllProductByIsFeature(categoryId: number) {
     try {
-        const response = await axios.get(`${baseUrl}/Product/promotion`);
+        const response = await axios.get(`${baseUrl}/Product/isfeature`, {
+            params: {
+                categoryId: categoryId
+            }
+        });
         return response.data;
     }
     catch (error) {

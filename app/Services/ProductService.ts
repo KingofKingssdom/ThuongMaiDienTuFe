@@ -25,3 +25,17 @@ export async function GetAllProductByIsFeature(categoryId: number) {
         console.error("Lỗi gọi api")
     }
 }
+
+export async function GetProductByName(productName: string) {
+    try {
+        const response = await axios.get(`${baseUrl}/Product/search`, {
+            params: {
+                productName: productName
+            }
+        });
+        return response.data;
+    }
+    catch (error) {
+        console.error("Lỗi gọi api")
+    }
+}

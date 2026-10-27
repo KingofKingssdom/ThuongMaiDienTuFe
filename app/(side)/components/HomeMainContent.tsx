@@ -65,8 +65,6 @@ export default function HomeMainContent() {
                             </SwiperSlide>
                         ))}
                     </Swiper>
-
-                    {/* 3. NÚT BẤM TRÁI / PHẢI (Hiện lên khi rê chuột vào khung banner - group-hover) */}
                     <div className="swiper-button-prev absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/80 hover:bg-white rounded-full shadow flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
                         ❮
                     </div>

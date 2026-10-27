@@ -7,8 +7,8 @@ export default function Footer() {
 
     return (
         <>
-            <div className="bg-[#f2f2f3] w-full">
-                <div className="mx-auto w-[98%]  lg:w-[80%] 2xl:w-[70%] flex">
+            <div className="bg-[#f2f2f3] w-full pb-[30px]">
+                <div className="mx-auto w-[98%]  md:w-[90%] 2xl:w-[70%] flex justify-center">
                     <div className="w-[30%] grid">
                         <p className="font-semibold mt-[20px]">Tổng đài hỗ trợ miễn phí</p>
                         <p className="mt-[20px]">Mua hàng - bảo hành <span className="font-semibold">1800.2097</span> (7h30 - 22h00)</p>

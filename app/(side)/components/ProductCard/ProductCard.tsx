@@ -29,7 +29,7 @@ export default function ProductCard({ product }: ProductProps) {
                     <p className="text-gray-500 text-[13px] line-through">50000</p>
                 </div>
                 <div>
-                    Thông tin mô tả thêm về khuyễn mãi
+                    <p className="bg-gray-50 text-gray-600 text-[11px] p-2 rounded-lg mb-3 line-clamp-2 min-h-[50px]"> Thông tin mô tả thêm về khuyễn mãi</p>
                 </div>
             </Link>
         </>

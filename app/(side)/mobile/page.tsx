@@ -1,8 +1,14 @@
-
+import ProductList from "../components/ProductList"
 export default function Mobile() {
     return (
         <>
-            Chi tiết trrang điện thoại
+            <div className="mx-auto w-[98%] lg:w-[80%] 2xl:w-[70%]">
+                <ProductList
+                    title="Điện thoại"
+                    categoryId={1}
+                />
+            </div>
+
         </>
     )
 }

@@ -1,4 +1,5 @@
 import ProductList from "../components/ProductList"
+
 export default function Mobile() {
     return (
         <>
@@ -8,7 +9,6 @@ export default function Mobile() {
                     categoryId={1}
                 />
             </div>
-
         </>
     )
 }

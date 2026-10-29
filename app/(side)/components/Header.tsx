@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TbInvoice } from "react-icons/tb";
 import { LuPhoneCall } from "react-icons/lu";
 import { BiCategory } from "react-icons/bi";
@@ -9,10 +9,52 @@ import { FaRegUserCircle } from "react-icons/fa";
 import HomeSidebar from "./HomeSidebar";
 import SearchBox from "./SearchBox";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
+import { IoIosLogOut } from "react-icons/io";
 export default function Header() {
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const router = useRouter();
 
+    useEffect(() => {
+        // Kiểm tra xem người dùng đã đăng nhập chưa thông qua token lưu ở localStorage
+        const token = localStorage.getItem("token");
+        const name = localStorage.getItem("userName");
+        if (token) {
+            setIsLoggedIn(true);
+            if (name) setUserName(name);
+        }
+    }, []);
+
+    // Xử lý khi bấm vào nút Giỏ hàng
+    const handleCartClick = (e: React.MouseEvent) => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            e.preventDefault(); // Chặn việc chuyển trang mặc định của thẻ Link
+            alert("Vui lòng đăng nhập để xem giỏ hàng!");
+            router.push("/login");
+        }
+    };
+
+    // Xử lý khi bấm vào nút User
+    const handleUserClick = () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            router.push("/login");
+        } else {
+            setShowDropdown(!showDropdown);
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userName");
+        setIsLoggedIn(false);
+        setShowDropdown(false);
+        router.push("/login");
+    };
     return (
         <>
             <div className="relative w-full bg-gradient-to-b from-[#e24c5a] to-red-600">
@@ -58,16 +100,34 @@ export default function Header() {
                             <SearchBox />
                         </div>
 
-                        <div className="shrink-0">
+                        <Link href="/cart" onClick={handleCartClick} className="shrink-0">
                             <div className="cursor-pointer hover:bg-red-700 ml-[10px] xl:ml-[30px] h-[40px] w-[40px] xl:w-[120px] rounded-md flex items-center justify-center text-white transition-colors">
                                 <p className="hidden xl:block mr-2">Giỏ hàng</p>
                                 <IoCartOutline className="h-[25px] w-[25px]" />
                             </div>
-                        </div>
+                        </Link>
 
-                        <div className="hidden cursor-pointer hover:bg-red-700 ml-[10px] xl:ml-[30px] h-[40px] w-[120px] shrink-0 rounded-md bg-[#e45464] md:flex items-center justify-center text-white transition-colors">
-                            <p className="w-[80px] text-center truncate">Tên user</p>
-                            <FaRegUserCircle className="h-[25px] w-[25px] ml-1" />
+                        <div className="relative">
+                            <div
+                                onClick={handleUserClick}
+                                className="hidden cursor-pointer hover:bg-red-700 ml-[10px] xl:ml-[30px] h-[40px] w-[120px] shrink-0 rounded-md bg-[#e45464] md:flex items-center justify-center text-white transition-colors"
+                            >
+                                <p className="w-[80px] text-center truncate">{isLoggedIn ? userName : "Đăng nhập"}</p>
+                                <FaRegUserCircle className="h-[25px] w-[25px] ml-1" />
+                            </div>
+
+                            {/* Dropdown Đăng xuất nếu đã đăng nhập */}
+                            {isLoggedIn && showDropdown && (
+                                <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-xl border border-gray-100 py-1 z-50">
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-50 transition-colors"
+                                    >
+                                        <IoIosLogOut className="w-4 h-4" />
+                                        <span>Đăng xuất</span>
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,19 @@ import {
     DeleteProductService,
     GetVariantsByProductIdService
 } from "@/app/Services/ProductService";
+import { GetAllBrandsService } from "@/app/Services/BrandService";
+import { GetAllCategoriesService } from "@/app/Services/CategoryService";
 import { MdAdd, MdArrowBack, MdDelete, MdEdit, MdLayers, MdClose } from "react-icons/md";
+
+interface Brand {
+    id: number;
+    brandName: string;
+}
+
+interface Category {
+    id: number;
+    categoryName: string;
+}
 
 interface ProductVariant {
     id: number;
@@ -25,13 +37,15 @@ interface Product {
     urlImageProduct: string;
     isFeatured: boolean;
     isOnPromotion: boolean;
-    brandId?: number;
-    categoryId?: number;
+    category?: Category;
+    brand?: Brand;
 }
 
 export default function ProductAdminPage() {
     const [viewMode, setViewMode] = useState<"list" | "create" | "edit">("list");
     const [products, setProducts] = useState<Product[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(false);
 
     // State cho form thêm/sửa
@@ -48,21 +62,28 @@ export default function ProductAdminPage() {
     const [selectedProductVariants, setSelectedProductVariants] = useState<ProductVariant[] | null>(null);
     const [isVariantModalOpen, setIsVariantModalOpen] = useState(false);
 
-    // Tải danh sách sản phẩm
-    const loadProducts = async () => {
+    // Tải danh sách sản phẩm, brands và categories đồng thời
+    const loadData = async () => {
         setLoading(true);
         try {
-            const res = await GetAllProductService();
-            setProducts(res.data || res || []);
+            const [prodRes, brandRes, catRes] = await Promise.all([
+                GetAllProductService(),
+                GetAllBrandsService(),
+                GetAllCategoriesService()
+            ]);
+
+            setProducts(prodRes.data || prodRes || []);
+            setBrands(brandRes.data || brandRes || []);
+            setCategories(catRes.data || catRes || []);
         } catch (error) {
-            alert("Không thể tải danh sách sản phẩm.");
+            alert("Không thể tải dữ liệu từ hệ thống.");
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        loadProducts();
+        loadData();
     }, []);
 
     // Reset form
@@ -77,15 +98,15 @@ export default function ProductAdminPage() {
         setCurrentId(null);
     };
 
-    // Mở form chỉnh sửa
+    // Mở form chỉnh sửa (Lấy ID từ object category và brand trả về từ backend)
     const handleOpenEdit = (p: Product) => {
         setCurrentId(p.id);
         setProductName(p.productName);
         setDescription(p.description || "");
         setIsFeatured(p.isFeatured);
         setIsOnPromotion(p.isOnPromotion);
-        setBrandId(p.brandId ? String(p.brandId) : "");
-        setCategoryId(p.categoryId ? String(p.categoryId) : "");
+        setBrandId(p.brand?.id ? String(p.brand.id) : "");
+        setCategoryId(p.category?.id ? String(p.category.id) : "");
         setImageFile(null);
         setViewMode("edit");
     };
@@ -97,7 +118,7 @@ export default function ProductAdminPage() {
 
         const formData = new FormData();
         formData.append("ProductName", productName);
-        formData.append("Description", description);
+        formData.append("Description", description || "");
         formData.append("IsFeatured", String(isFeatured));
         formData.append("IsOnPromotion", String(isOnPromotion));
         formData.append("BrandId", brandId);
@@ -116,7 +137,7 @@ export default function ProductAdminPage() {
             }
             setViewMode("list");
             resetForm();
-            loadProducts();
+            loadData();
         } catch (error) {
             alert("Thực thi thất bại. Vui lòng kiểm tra lại.");
         }
@@ -130,7 +151,7 @@ export default function ProductAdminPage() {
         try {
             await DeleteProductService(id, token);
             alert("Xóa sản phẩm thành công!");
-            loadProducts();
+            loadData();
         } catch (error) {
             alert("Xóa sản phẩm thất bại.");
         }
@@ -143,7 +164,7 @@ export default function ProductAdminPage() {
             setSelectedProductVariants(res.data || res || []);
             setIsVariantModalOpen(true);
         } catch (error) {
-            alert("Không thể tải biến thể hoặc sản phẩm này chưa có biến thể.");
+            alert("Sản phẩm này chưa có biến thể nào.");
             setSelectedProductVariants([]);
             setIsVariantModalOpen(true);
         }
@@ -189,7 +210,8 @@ export default function ProductAdminPage() {
                                         <th className="py-3 px-4">ID</th>
                                         <th className="py-3 px-4">Ảnh</th>
                                         <th className="py-3 px-4">Tên sản phẩm</th>
-                                        <th className="py-3 px-4">Mô tả</th>
+                                        <th className="py-3 px-4">Thương hiệu</th>
+                                        <th className="py-3 px-4">Danh mục</th>
                                         <th className="py-3 px-4 text-center">Biến thể</th>
                                         <th className="py-3 px-4 text-right">Hành động</th>
                                     </tr>
@@ -209,7 +231,14 @@ export default function ProductAdminPage() {
                                                     </div>
                                                 </td>
                                                 <td className="py-3 px-4 font-semibold text-gray-800">{p.productName}</td>
-                                                <td className="py-3 px-4 text-gray-500 max-w-xs truncate">{p.description}</td>
+                                                {/* Hiển thị brandName từ object brand */}
+                                                <td className="py-3 px-4 text-gray-600 font-medium">
+                                                    {p.brand?.brandName || <span className="text-gray-300">Chưa có</span>}
+                                                </td>
+                                                {/* Hiển thị categoryName từ object category */}
+                                                <td className="py-3 px-4 text-gray-600 font-medium">
+                                                    {p.category?.categoryName || <span className="text-gray-300">Chưa có</span>}
+                                                </td>
                                                 <td className="py-3 px-4 text-center">
                                                     <button
                                                         onClick={() => handleViewVariants(p.id)}
@@ -239,7 +268,7 @@ export default function ProductAdminPage() {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan={6} className="text-center py-10 text-gray-400 text-sm">
+                                            <td colSpan={7} className="text-center py-10 text-gray-400 text-sm">
                                                 Chưa có sản phẩm nào.
                                             </td>
                                         </tr>
@@ -265,6 +294,7 @@ export default function ProductAdminPage() {
                                 required
                                 value={productName}
                                 onChange={(e) => setProductName(e.target.value)}
+                                placeholder="Nhập tên sản phẩm..."
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500"
                             />
                         </div>
@@ -273,6 +303,7 @@ export default function ProductAdminPage() {
                             <textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Nhập mô tả sản phẩm..."
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500"
                                 rows={3}
                             />
@@ -287,26 +318,40 @@ export default function ProductAdminPage() {
                                 className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer"
                             />
                         </div>
+
+                        {/* DROPDOWN CHỌN BRAND VÀ CATEGORY */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Brand ID</label>
-                                <input
-                                    type="number"
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Thương hiệu (Brand) *</label>
+                                <select
                                     required
                                     value={brandId}
                                     onChange={(e) => setBrandId(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500"
-                                />
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500 bg-white cursor-pointer"
+                                >
+                                    <option value="">-- Chọn thương hiệu --</option>
+                                    {brands.map((b) => (
+                                        <option key={b.id} value={b.id}>
+                                            {b.brandName}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Category ID</label>
-                                <input
-                                    type="number"
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Danh mục (Category) *</label>
+                                <select
                                     required
                                     value={categoryId}
                                     onChange={(e) => setCategoryId(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500"
-                                />
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500 bg-white cursor-pointer"
+                                >
+                                    <option value="">-- Chọn danh mục --</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.categoryName}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
 

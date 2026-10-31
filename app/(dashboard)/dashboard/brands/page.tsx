@@ -6,40 +6,53 @@ import {
     UpdateBrandService,
     DeleteBrandService
 } from "@/app/Services/BrandService";
+import { GetAllCategoriesService } from "@/app/Services/CategoryService"; // Import service lấy danh mục
 import { MdAdd, MdArrowBack, MdDelete, MdEdit } from "react-icons/md";
+
+interface Category {
+    id: number;
+    categoryName: string;
+}
 
 interface Brand {
     id: number;
     brandName: string;
     urlImageBrand: string;
+    categories?: Category[]; // Hoặc categoryIds tuỳ theo cấu trúc trả về của backend
 }
 
 export default function BrandAdminPage() {
     const [viewMode, setViewMode] = useState<"list" | "create" | "edit">("list");
     const [brands, setBrands] = useState<Brand[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]); // State chứa danh sách Category
     const [loading, setLoading] = useState(false);
 
     // State form
     const [currentId, setCurrentId] = useState<number | null>(null);
     const [brandName, setBrandName] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]); // Lưu các ID danh mục được chọn
     const [submitting, setSubmitting] = useState(false);
 
-    // Tải danh sách thương hiệu
-    const loadBrands = async () => {
+    // Tải danh sách thương hiệu và danh mục
+    const loadData = async () => {
         setLoading(true);
         try {
-            const res = await GetAllBrandsService();
-            setBrands(res.data || res || []);
+            const [brandRes, catRes] = await Promise.all([
+                GetAllBrandsService(),
+                GetAllCategoriesService()
+            ]);
+            setBrands(brandRes.data || brandRes || []);
+            setCategories(catRes.data || catRes || []);
         } catch (error) {
-            console.error("Lỗi tải thương hiệu:", error);
+            console.error("Lỗi tải dữ liệu:", error);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        loadBrands();
+        loadData();
     }, []);
 
     // Mở form chỉnh sửa
@@ -47,20 +60,37 @@ export default function BrandAdminPage() {
         setCurrentId(b.id);
         setBrandName(b.brandName);
         setImageFile(null);
+        // Nếu brand đã có sẵn các category liên kết thì đưa vào state, nếu không để mảng trống
+        const existingCatIds = b.categories ? b.categories.map(c => c.id) : [];
+        setSelectedCategoryIds(existingCatIds);
         setViewMode("edit");
     };
 
+    // Xử lý chọn/bỏ chọn checkbox danh mục
+    const handleCategoryCheckboxChange = (catId: number) => {
+        if (selectedCategoryIds.includes(catId)) {
+            setSelectedCategoryIds(selectedCategoryIds.filter(id => id !== catId));
+        } else {
+            setSelectedCategoryIds([...selectedCategoryIds, catId]);
+        }
+    };
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
         const token = localStorage.getItem("token") || "";
 
         const formData = new FormData();
         formData.append("BrandName", brandName);
+
         if (imageFile) {
             formData.append("UrlImageBrand", imageFile);
         }
+
+        // Đính kèm danh sách CategoryIds vào FormData theo chuẩn mảng của .NET backend
+        selectedCategoryIds.forEach((catId) => {
+            formData.append("CategoryIds", String(catId));
+        });
 
         try {
             if (viewMode === "create") {
@@ -73,8 +103,9 @@ export default function BrandAdminPage() {
             setViewMode("list");
             setBrandName("");
             setImageFile(null);
+            setSelectedCategoryIds([]);
             setCurrentId(null);
-            loadBrands();
+            loadData();
         } catch (error) {
             console.error("Lỗi thực thi:", error);
             alert("Thao tác thất bại.");
@@ -91,7 +122,7 @@ export default function BrandAdminPage() {
         try {
             await DeleteBrandService(id, token);
             alert("Xóa thương hiệu thành công!");
-            loadBrands();
+            loadData();
         } catch (error) {
             console.error("Lỗi xóa:", error);
             alert("Xóa thương hiệu thất bại.");
@@ -108,7 +139,7 @@ export default function BrandAdminPage() {
                 </div>
                 {viewMode === "list" ? (
                     <button
-                        onClick={() => { setBrandName(""); setImageFile(null); setViewMode("create"); }}
+                        onClick={() => { setBrandName(""); setImageFile(null); setSelectedCategoryIds([]); setViewMode("create"); }}
                         className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm cursor-pointer"
                     >
                         <MdAdd className="w-5 h-5" />
@@ -116,7 +147,7 @@ export default function BrandAdminPage() {
                     </button>
                 ) : (
                     <button
-                        onClick={() => { setViewMode("list"); setBrandName(""); setImageFile(null); }}
+                        onClick={() => { setViewMode("list"); setBrandName(""); setImageFile(null); setSelectedCategoryIds([]); }}
                         className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
                     >
                         <MdArrowBack className="w-5 h-5" />
@@ -206,6 +237,28 @@ export default function BrandAdminPage() {
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500"
                             />
                         </div>
+
+                        {/* PHẦN CHỌN DANH MỤC (CATEGORY) CHO BRAND */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Thuộc danh mục (Category) *</label>
+                            <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto border border-gray-200 p-3 rounded-lg bg-gray-50">
+                                {categories.map((cat) => {
+                                    const isChecked = selectedCategoryIds.includes(cat.id);
+                                    return (
+                                        <label key={cat.id} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
+                                            <input
+                                                type="checkbox"
+                                                checked={isChecked}
+                                                onChange={() => handleCategoryCheckboxChange(cat.id)}
+                                                className="w-4 h-4 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer"
+                                            />
+                                            <span>{cat.categoryName}</span>
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Hình ảnh Logo {viewMode === "create" ? "*" : "(Để trống nếu không đổi)"}
@@ -218,6 +271,7 @@ export default function BrandAdminPage() {
                                 className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer"
                             />
                         </div>
+
                         <div className="flex gap-3 pt-2">
                             <button
                                 type="submit"
@@ -228,7 +282,7 @@ export default function BrandAdminPage() {
                             </button>
                             <button
                                 type="button"
-                                onClick={() => { setViewMode("list"); setBrandName(""); setImageFile(null); }}
+                                onClick={() => { setViewMode("list"); setBrandName(""); setImageFile(null); setSelectedCategoryIds([]); }}
                                 className="px-5 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                             >
                                 Hủy bỏ

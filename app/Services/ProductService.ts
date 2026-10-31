@@ -4,6 +4,16 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 export async function GetAllProductService() {
 
     try {
+        const response = await axios.get(`${baseUrl}/Product`);
+        return response.data;
+    }
+    catch (error) {
+        console.error("lỗi gọi api")
+    }
+}
+export async function GetAllProductByPromotion() {
+
+    try {
         const response = await axios.get(`${baseUrl}/Product/promotion`);
         return response.data;
     }
@@ -39,7 +49,15 @@ export async function GetProductByName(productName: string) {
         console.error("Lỗi gọi api")
     }
 }
-
+export async function GetProductById(id: number) {
+    try {
+        const response = await axios.get(`${baseUrl}/Product/${id}`);
+        return response.data;
+    }
+    catch (error) {
+        console.error("Lỗi gọi api")
+    }
+}
 export async function GetAllProductByCategoryAndBrand(categoryId: number, brandId: number | null) {
     try {
         const response = await axios.get(`${baseUrl}/Product/filter`, {
@@ -55,7 +73,6 @@ export async function GetAllProductByCategoryAndBrand(categoryId: number, brandI
     }
 }
 
-// 2. Thêm mới sản phẩm (Dùng FormData vì có file ảnh)
 export async function CreateProductService(formData: FormData, token: string) {
     try {
         const response = await axios.post(`${baseUrl}/Product`, formData, {
@@ -71,10 +88,9 @@ export async function CreateProductService(formData: FormData, token: string) {
     }
 }
 
-// 3. Cập nhật sản phẩm
 export async function UpdateProductService(id: number, formData: FormData, token: string) {
     try {
-        const response = await axios.put(`${baseUrl}/Product/${id}`, formData, {
+        const response = await axios.patch(`${baseUrl}/Product/update/${id}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`
@@ -90,7 +106,7 @@ export async function UpdateProductService(id: number, formData: FormData, token
 // 4. Xóa sản phẩm
 export async function DeleteProductService(id: number, token: string) {
     try {
-        const response = await axios.delete(`${baseUrl}/Product/${id}`, {
+        const response = await axios.put(`${baseUrl}/Product/delete/${id}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -102,10 +118,10 @@ export async function DeleteProductService(id: number, token: string) {
     }
 }
 
-// 5. Lấy danh sách biến thể theo ProductId (Giả định endpoint của bạn là /ProductVariant/product/{productId} hoặc tương tự)
+// 5. Lấy danh sách biến thể theo ProductId 
 export async function GetVariantsByProductIdService(productId: number) {
     try {
-        // Hãy điều chỉnh lại đường dẫn endpoint này nếu backend của bạn đặt tên khác
+
         const response = await axios.get(`${baseUrl}/ProductVariant/product/${productId}`);
         return response.data;
     } catch (error) {

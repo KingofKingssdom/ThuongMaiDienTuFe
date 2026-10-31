@@ -45,7 +45,7 @@ export async function CreateBrandService(formData: FormData, token: string) {
 // 3. Cập nhật thương hiệu
 export async function UpdateBrandService(id: number, formData: FormData, token: string) {
     try {
-        const response = await axios.put(`${baseUrl}/Brand/${id}`, formData, {
+        const response = await axios.patch(`${baseUrl}/Brand/update/${id}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`
@@ -61,7 +61,7 @@ export async function UpdateBrandService(id: number, formData: FormData, token: 
 // 4. Xóa thương hiệu
 export async function DeleteBrandService(id: number, token: string) {
     try {
-        const response = await axios.delete(`${baseUrl}/Brand/${id}`, {
+        const response = await axios.put(`${baseUrl}/Brand/delete/${id}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }

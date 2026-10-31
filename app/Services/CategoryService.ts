@@ -31,7 +31,7 @@ export async function CreateCategoryService(data: { categoryName: string }, toke
 // 3. Cập nhật danh mục
 export async function UpdateCategoryService(id: number, data: { categoryName: string }, token: string) {
     try {
-        const response = await axios.put(`${baseUrl}/Category/${id}`, data, {
+        const response = await axios.patch(`${baseUrl}/Category/update/${id}`, data, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -46,7 +46,7 @@ export async function UpdateCategoryService(id: number, data: { categoryName: st
 // 4. Xóa danh mục
 export async function DeleteCategoryService(id: number, token: string) {
     try {
-        const response = await axios.delete(`${baseUrl}/Category/${id}`, {
+        const response = await axios.put(`${baseUrl}/Category/delete/${id}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }

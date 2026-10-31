@@ -44,7 +44,7 @@ export async function CreateVariantService(formData: FormData, token: string) {
 // 4. Cập nhật biến thể
 export async function UpdateVariantService(id: number, formData: FormData, token: string) {
     try {
-        const response = await axios.put(`${baseUrl}/ProductVariant/${id}`, formData, {
+        const response = await axios.patch(`${baseUrl}/ProductVariant/update/${id}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`
@@ -60,7 +60,7 @@ export async function UpdateVariantService(id: number, formData: FormData, token
 // 5. Xóa biến thể
 export async function DeleteVariantService(id: number, token: string) {
     try {
-        const response = await axios.delete(`${baseUrl}/ProductVariant/${id}`, {
+        const response = await axios.put(`${baseUrl}/ProductVariant/delete/${id}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }

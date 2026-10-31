@@ -10,9 +10,9 @@ import {
     MdLayers,
     MdLogout,
     MdMenu,
-    MdClose
+    MdClose,
+    MdOutlineSettingsInputComponent
 } from "react-icons/md";
-
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
@@ -28,8 +28,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         { name: "Tổng quan", href: "/dashboard", icon: <MdDashboard className="w-5 h-5" /> },
         { name: "Quản lý Sản phẩm", href: "/dashboard/products", icon: <MdInventory className="w-5 h-5" /> },
         { name: "Biến thể sản phẩm", href: "/dashboard/variants", icon: <MdLayers className="w-5 h-5" /> },
-        { name: "Thương hiệu (Brand)", href: "/dashboard/brands", icon: <MdBrandingWatermark className="w-5 h-5" /> },
-        { name: "Danh mục (Category)", href: "/dashboard/categories", icon: <MdCategory className="w-5 h-5" /> },
+        { name: "Thương hiệu", href: "/dashboard/brands", icon: <MdBrandingWatermark className="w-5 h-5" /> },
+        { name: "Danh mục", href: "/dashboard/categories", icon: <MdCategory className="w-5 h-5" /> },
+        { name: "Thông số sản phẩm", href: "/dashboard/specifications", icon: <MdOutlineSettingsInputComponent className="w-5 h-5" /> },
+
     ];
 
     return (

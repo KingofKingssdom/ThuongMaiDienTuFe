@@ -13,7 +13,6 @@ interface HomeSidebarProps {
 }
 
 export default function HomeSidebar({ isOpen = true, onClose }: HomeSidebarProps) {
-    // Nếu dùng dạng popup modal trên mobile thì kiểm tra trạng thái isOpen
     if (!isOpen) return null;
 
     const categories = [

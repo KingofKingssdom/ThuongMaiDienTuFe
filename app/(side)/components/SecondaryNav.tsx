@@ -50,7 +50,7 @@ export default function Secondary({ onOpenCategory }: SecondaryProps) {
                 <p className="w-[80px] text-center mx-auto font-semibold text-[13px]">Địa điểm</p>
             </div>
 
-            {/* Tài khoản (Username) */}
+
             <div
                 onClick={() => handleTabClick("user")}
                 className={`cursor-pointer w-[100px] flex flex-col items-center justify-center py-1 transition-colors ${activeTab === "user" ? "text-red-600" : "text-gray-600 hover:text-red-600"

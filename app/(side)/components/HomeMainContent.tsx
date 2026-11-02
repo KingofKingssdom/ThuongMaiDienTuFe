@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
-// Import CSS của Swiper
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -45,12 +45,12 @@ export default function HomeMainContent() {
                         modules={[Autoplay, Navigation, Pagination]}
                         spaceBetween={15}
                         slidesPerView={1}
-                        // Tự chạy sau 5 giây (5000ms), không dừng khi hover chuột (disableOnInteraction: false)
+
                         autoplay={{
                             delay: 5000,
                             disableOnInteraction: false,
                         }}
-                        // Cho phép cầm kéo (grabCursor giúp hiện icon bàn tay khi rê chuột)
+
                         grabCursor={true}
                         onSwiper={(swiper) => (swiperRef.current = swiper)}
                         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}

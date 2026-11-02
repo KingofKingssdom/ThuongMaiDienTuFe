@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { GetAllProductByIsFeature } from "@/app/Services/ProductService";
 import { UIProduct } from "./ProductFeature";
 import ProductFeature from "./ProductFeature";
-// Khớp với JSON backend trả về
+
 interface ProductVariant {
     currentPrice: number;
     originPrice?: number;
 }
 
 interface Product {
-    id: number; // Chỉnh lại thành id thường theo đúng JSON backend
+    id: number;
     productName: string;
-    description: string; // Khớp với trường Ddescription/description ở backend
+    description: string;
     urlImageProduct: string;
     isFeatured: boolean;
     isOnPromotion: boolean;
@@ -77,7 +77,7 @@ export default function FeatureContainer() {
     }, []);
 
 
-    // Hàm format dữ liệu từ API sang cấu trúc UI hiển thị
+
     const formatProductsForUI = (products: Product[]): UIProduct[] => {
         if (!products) return [];
         return products.map((p) => {

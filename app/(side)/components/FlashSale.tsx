@@ -35,13 +35,13 @@ export default function FlashSale() {
                     <div className="relative  bg-red-600 w-[100%] mx-auto rounded-[20px] md:rounded-[30px] h-[400px] border-5 border-solid border-[#f2d79f] overflow-hidden">
                         <Swiper
                             modules={[Navigation, Autoplay]}
-                            spaceBetween={5} // Khoảng cách giữa các card
-                            slidesPerView={2}  // Mặc định cho màn hình nhỏ (mobile) hiện 2 card
+                            spaceBetween={5}
+                            slidesPerView={2}
                             navigation={{
                                 nextEl: ".swiper-button-next-promotion",
                                 prevEl: ".swiper-button-prev-promotion",
-                            }}  // Hiển thị nút qua lại 2 bên
-                            // Cấu hình số lượng card thay đổi theo kích thước màn hình (Responsive)
+                            }}
+
                             breakpoints={{
                                 640: {
                                     slidesPerView: 3,

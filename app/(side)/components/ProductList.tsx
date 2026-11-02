@@ -101,10 +101,6 @@ export default function ProductList({ categoryId, title }: ProductListProps) {
 
 
             <div className="mt-6">
-                {/* <p className="font-semibold text-gray-700 mb-4">
-                    Danh sách sản phẩm (Đang lọc theo Brand ID: {selectedBrandId ? selectedBrandId : "Tất cả"})
-                </p> */}
-
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                     {products.length > 0 ? (

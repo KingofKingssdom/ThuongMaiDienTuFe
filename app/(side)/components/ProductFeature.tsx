@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+"use client"
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import Link from "next/link";
-// Import CSS của Swiper nếu chưa có ở file root
+
 import "swiper/css";
 import "swiper/css/navigation";
 
-// Interface cho UI sản phẩm sau khi format
+
 export interface UIProduct {
     id: number;
     name: string;
@@ -82,7 +83,7 @@ export default function ProductFeature({
                 >
                     {currentProducts.map((product) => (
                         <SwiperSlide key={product.id} className="h-auto pb-[20px]">
-                            <Link href="#" className="min-h-[370px] group border border-gray-200 rounded-2xl p-3 flex flex-col justify-between h-full hover:shadow-md transition-shadow relative bg-white">
+                            <Link href={`products/${product.id}`} className="min-h-[370px] group border border-gray-200 rounded-2xl p-3 flex flex-col justify-between h-full hover:shadow-md transition-shadow relative bg-white">
 
                                 {product.discount && (
                                     <span className="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-br-lg rounded-tl-xl z-10">

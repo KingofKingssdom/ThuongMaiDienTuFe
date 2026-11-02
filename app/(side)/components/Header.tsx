@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { TbInvoice } from "react-icons/tb";
 import { LuPhoneCall } from "react-icons/lu";
 import { BiCategory } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
-import { CiLocationOn, CiSearch } from "react-icons/ci";
+import { CiLocationOn } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import HomeSidebar from "./HomeSidebar";
@@ -19,7 +19,6 @@ export default function Header() {
     const router = useRouter();
 
     useEffect(() => {
-        // Kiểm tra xem người dùng đã đăng nhập chưa thông qua token lưu ở localStorage
         const token = localStorage.getItem("token");
         const name = localStorage.getItem("userName");
         if (token) {
@@ -28,17 +27,24 @@ export default function Header() {
         }
     }, []);
 
-    // Xử lý khi bấm vào nút Giỏ hàng
     const handleCartClick = (e: React.MouseEvent) => {
         const token = localStorage.getItem("token");
         if (!token) {
-            e.preventDefault(); // Chặn việc chuyển trang mặc định của thẻ Link
+            e.preventDefault();
             alert("Vui lòng đăng nhập để xem giỏ hàng!");
             router.push("/login");
         }
     };
 
-    // Xử lý khi bấm vào nút User
+    const handleOrderClick = (e: React.MouseEvent) => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            e.preventDefault();
+            alert("Vui lòng đăng nhập để xem đơn hàng!");
+            router.push("/login");
+        }
+    }
+
     const handleUserClick = () => {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -64,10 +70,14 @@ export default function Header() {
                             <div className="w-[95%] md:w-[60%] xl:w-[70%] text-white text-xs md:text-sm">
                                 Nội dung chạy quảng cáo
                             </div>
-                            <div className="h-[20px] cursor-pointer hover:text-[13px] border-l border-solid border-white w-[20%] justify-center hidden md:flex items-center text-white">
-                                <TbInvoice className="w-[15px] h-[15px] mr-1" />
-                                <p>Tra cứu đơn hàng</p>
-                            </div>
+                            <Link href="/order" onClick={handleOrderClick} className="hidden md:block">
+
+                                <div className="cursor-pointer hover:text-[13px] ml-[10px] xl:ml-[30px] w-[160px] rounded-md flex items-center justify-center text-white transition-colors">
+                                    <TbInvoice className="w-[15px] h-[15px] mr-1" />
+                                    <p className="w-[160px]">Tra cứu đơn hàng</p>
+                                </div>
+                            </Link>
+
                             <div className="h-[20px] cursor-pointer hover:text-[13px] border-l border-solid border-white w-[15%] justify-center hidden md:flex items-center text-white">
                                 <LuPhoneCall className="w-[15px] h-[15px] mr-1" />
                                 <p>1800 2097</p>
@@ -75,7 +85,6 @@ export default function Header() {
                         </div>
                     </div>
 
-                    {/* ĐÃ XÓA overflow-hidden Ở ĐÂY ĐỂ DROPDOWN TÌM KIẾM KHÔNG BỊ CẮT KHUẤT */}
                     <div className="sticky items-center flex top-0 z-[3px] mx-auto h-[62px] w-full">
                         <Link href="./" className="w-[55px] h-[55px] shrink-0">
                             <img src="./image/Logo.png" alt="Logo" className="w-[100%] h-[100%] object-contain" />
@@ -95,7 +104,7 @@ export default function Header() {
                             <p className="w-[80px] text-center">Địa điểm</p>
                         </div>
 
-                        {/* Ô tìm kiếm chiếm không gian còn lại */}
+
                         <div className="flex-1 mx-[20px] relative z-20">
                             <SearchBox />
                         </div>
@@ -116,7 +125,7 @@ export default function Header() {
                                 <FaRegUserCircle className="h-[25px] w-[25px] ml-1" />
                             </div>
 
-                            {/* Dropdown Đăng xuất nếu đã đăng nhập */}
+
                             {isLoggedIn && showDropdown && (
                                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-xl border border-gray-100 py-1 z-50">
                                     <button
@@ -133,7 +142,6 @@ export default function Header() {
                 </div>
             </div>
 
-            {/* Popup Backdrop & Danh mục */}
             {isCategoryOpen && (
                 <div className="fixed inset-0 z-[999] flex">
                     <div

@@ -2,7 +2,7 @@
 import { GetAllBrandByCategoryId } from "@/app/Services/BrandService"
 import { useEffect, useState } from "react"
 import { GetAllProductByCategoryAndBrand } from "@/app/Services/ProductService"
-
+import Link from "next/link"
 interface Brand {
     id: number;
     brandName: string;
@@ -105,7 +105,7 @@ export default function ProductList({ categoryId, title }: ProductListProps) {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                     {products.length > 0 ? (
                         products.map((p) => (
-                            <div key={p.id} className="border border-gray-200 rounded-xl p-3 bg-white shadow-sm flex flex-col justify-between">
+                            <Link href={`products/${p.id}`} key={p.id} className="border border-gray-200 rounded-xl p-3 bg-white shadow-sm flex flex-col justify-between">
                                 <div className="w-full h-36 md:h-40 flex items-center justify-center mb-2">
                                     <img
                                         src={`https://localhost:7276/${p.urlImageProduct}`}
@@ -115,7 +115,7 @@ export default function ProductList({ categoryId, title }: ProductListProps) {
                                 </div>
                                 <h3 className="text-xs md:text-sm font-semibold text-gray-800 line-clamp-2 mb-2">{p.productName}</h3>
                                 <p className="text-[11px] md:text-xs text-gray-500 line-clamp-2 mb-2">{p.description}</p>
-                            </div>
+                            </Link>
                         ))
                     ) : (
                         <p className="text-gray-500 text-sm col-span-full text-center py-4">Không tìm thấy sản phẩm nào phù hợp.</p>

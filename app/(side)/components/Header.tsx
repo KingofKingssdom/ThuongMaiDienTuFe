@@ -86,7 +86,7 @@ export default function Header() {
                     </div>
 
                     <div className="sticky items-center flex top-0 z-[3px] mx-auto h-[62px] w-full">
-                        <Link href="./" className="w-[55px] h-[55px] shrink-0">
+                        <Link href="/" className="w-[55px] h-[55px] shrink-0">
                             <img src="./image/Logo.png" alt="Logo" className="w-[100%] h-[100%] object-contain" />
                         </Link>
 

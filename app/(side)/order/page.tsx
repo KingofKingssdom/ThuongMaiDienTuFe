@@ -55,7 +55,7 @@ export default function OrdersPage() {
         fetchOrders();
     }, []);
 
-    // Hàm hiển thị tên trạng thái đơn hàng
+
     const getOrderStatusText = (status: number) => {
         switch (status) {
             case 1: return { text: "Chờ xác nhận", color: "bg-amber-50 text-amber-600 border-amber-200" };
@@ -73,7 +73,7 @@ export default function OrdersPage() {
     return (
         <div className="bg-gray-100 min-h-screen py-6 px-4 md:px-8">
             <div className="max-w-4xl mx-auto">
-                {/* Header */}
+
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                         <Link href="/" className="p-2 bg-white rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
@@ -99,7 +99,7 @@ export default function OrdersPage() {
 
                             return (
                                 <div key={order.id} className="bg-white rounded-2xl p-5 shadow-xs border border-gray-200 space-y-4">
-                                    {/* Top card: Mã đơn & Trạng thái */}
+
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-100 gap-2">
                                         <div>
                                             <span className="text-xs text-gray-500 uppercase font-semibold">Mã đơn hàng:</span>
@@ -115,7 +115,7 @@ export default function OrdersPage() {
                                         </div>
                                     </div>
 
-                                    {/* Danh sách sản phẩm trong đơn hàng (OrderItems) */}
+
                                     <div className="divide-y divide-gray-100">
                                         {order.orderItems && order.orderItems.map((item, index) => (
                                             <div key={index} className="py-3 flex items-center justify-between gap-4">
@@ -145,7 +145,7 @@ export default function OrdersPage() {
                                         ))}
                                     </div>
 
-                                    {/* Thông tin người nhận & thanh toán */}
+
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-600 pt-3 border-t border-gray-100">
                                         <div className="space-y-1.5">
                                             <div className="flex items-center gap-1.5 font-medium text-gray-800">
@@ -174,7 +174,7 @@ export default function OrdersPage() {
                                         </div>
                                     </div>
 
-                                    {/* Tổng tiền đơn hàng */}
+
                                     <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
                                         <div className="text-xs text-gray-500">
                                             Phí vận chuyển: <span className="font-medium text-gray-800">{order.shippingFee.toLocaleString("vi-VN")}₫</span>

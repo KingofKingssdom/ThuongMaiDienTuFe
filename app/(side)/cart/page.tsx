@@ -25,10 +25,10 @@ export default function Cart() {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // State lưu danh sách ID các sản phẩm được người dùng tick chọn
+
     const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]);
 
-    // Tải danh sách giỏ hàng từ API
+
     const fetchCart = async () => {
         setLoading(true);
         const token = localStorage.getItem("token") || "";
@@ -36,7 +36,7 @@ export default function Cart() {
             const res = await GetCartService(token);
             const data = res.data || res || [];
             setCartItems(data);
-            // Mặc định ban đầu chọn tất cả các sản phẩm khi vừa tải xong
+
             setSelectedItemIds(data.map((item: CartItem) => item.id));
         } catch (error) {
             console.error("Lỗi tải giỏ hàng:", error);
@@ -49,7 +49,7 @@ export default function Cart() {
         fetchCart();
     }, []);
 
-    // Xử lý chọn/bỏ chọn 1 sản phẩm
+
     const handleToggleSelectOne = (id: number) => {
         if (selectedItemIds.includes(id)) {
             setSelectedItemIds(selectedItemIds.filter(itemId => itemId !== id));
@@ -58,7 +58,7 @@ export default function Cart() {
         }
     };
 
-    // Xử lý chọn/bỏ chọn tất cả
+
     const handleToggleSelectAll = () => {
         if (selectedItemIds.length === cartItems.length) {
             setSelectedItemIds([]); // Bỏ chọn hết
@@ -67,13 +67,13 @@ export default function Cart() {
         }
     };
 
-    // Xử lý xóa sản phẩm trong giỏ
+
     const handleDeleteItem = async (id: number) => {
         if (!confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) return;
         try {
-            // Thêm hàm xóa API của bạn ở đây nếu có, ví dụ: await DeleteCartItemService(id, token);
+
             alert("Đã xóa sản phẩm!");
-            // Cập nhật lại UI và loại bỏ ID khỏi danh sách đang chọn
+
             setCartItems(cartItems.filter(item => item.id !== id));
             setSelectedItemIds(selectedItemIds.filter(itemId => itemId !== id));
         } catch (error) {
@@ -82,24 +82,24 @@ export default function Cart() {
         }
     };
 
-    // Tính tổng tiền chỉ dựa trên các sản phẩm ĐƯỢC CHỌN (checked)
+
     const totalPrice = cartItems
         .filter(item => selectedItemIds.includes(item.id))
         .reduce((sum, item) => {
             return sum + (item.totalPrice || (item.priceAtTime * item.quantity));
         }, 0);
 
-    // Chuyển sang trang thanh toán với các sản phẩm đã chọn
+
     const handleProceedToCheckout = () => {
         if (selectedItemIds.length === 0) {
             alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán!");
             return;
         }
 
-        // Lưu danh sách ID các item được chọn vào localStorage để trang Checkout đọc dữ liệu
+
         localStorage.setItem("checkoutItemIds", JSON.stringify(selectedItemIds));
 
-        // Chuyển hướng sang trang thanh toán
+
         router.push("/checkout");
     };
 
@@ -110,7 +110,7 @@ export default function Cart() {
     return (
         <div className="bg-gray-100 min-h-screen py-6 px-4 md:px-8">
             <div className="max-w-5xl mx-auto">
-                {/* Header trang giỏ hàng */}
+
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                         <Link href="/" className="p-2 bg-white rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
@@ -131,9 +131,9 @@ export default function Cart() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                        {/* Danh sách các item có checkbox */}
+
                         <div className="lg:col-span-8 space-y-3">
-                            {/* Thanh chọn tất cả */}
+
                             <div className="bg-white p-3.5 rounded-xl border border-gray-200 flex items-center gap-3 text-sm font-medium text-gray-700">
                                 <input
                                     type="checkbox"
@@ -152,7 +152,7 @@ export default function Cart() {
                                 return (
                                     <div key={item.id} className="bg-white p-4 rounded-2xl shadow-xs border border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                         <div className="flex items-center gap-3 w-full sm:w-auto">
-                                            {/* Checkbox chọn từng item */}
+
                                             <input
                                                 type="checkbox"
                                                 checked={isChecked}
@@ -195,7 +195,7 @@ export default function Cart() {
                             })}
                         </div>
 
-                        {/* Khối tổng tiền và thanh toán */}
+
                         <div className="lg:col-span-4">
                             <div className="bg-white p-5 rounded-2xl shadow-xs border border-gray-200 space-y-4 sticky top-4">
                                 <h3 className="font-bold text-gray-900 text-base border-b border-gray-100 pb-3">Thông tin đơn hàng</h3>

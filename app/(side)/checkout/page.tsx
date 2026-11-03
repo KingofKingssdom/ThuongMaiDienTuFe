@@ -1,7 +1,7 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CreateOrderService, CreateOrderPayload } from "@/app/Services/OrderService";
+import { CreateOrderService, GetVNPayPaymentUrlService, CreateOrderPayload } from "@/app/Services/OrderService";
 import { MdArrowBack, MdLocalShipping, MdPayment } from "react-icons/md";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export default function CheckoutPage() {
     const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
 
-    // Form thông tin nhận hàng
+
     const [receiverName, setReceiverName] = useState("");
     const [receiverPhone, setReceiverPhone] = useState("");
     const [receiverAddress, setReceiverAddress] = useState("");
@@ -21,7 +21,6 @@ export default function CheckoutPage() {
         setSubmitting(true);
         const token = localStorage.getItem("token") || "";
 
-        // Lấy danh sách ID sản phẩm cần thanh toán đã lưu từ giỏ hàng hoặc nút Mua ngay
         const selectedCartItemIds = JSON.parse(localStorage.getItem("checkoutItemIds") || "[]");
 
         if (selectedCartItemIds.length === 0) {
@@ -34,7 +33,7 @@ export default function CheckoutPage() {
             shippingFee: 0,
             discountAmount: 0,
             paymentMethod: Number(paymentMethod),
-            paymentStatus: 0, // 0: Chưa thanh toán / Chờ xử lý
+            paymentStatus: 0,
             receiverName,
             receiverPhone,
             receiverAddress,
@@ -43,26 +42,36 @@ export default function CheckoutPage() {
         };
 
         try {
-            const response = await CreateOrderService(payload, token);
-            alert("Tạo đơn hàng thành công!");
+            const orderRes = await CreateOrderService(payload, token);
+
+
+            const createdOrder = orderRes.data || orderRes;
+            const orderId = createdOrder.id;
+
             localStorage.removeItem("checkoutItemIds");
 
-            // KIỂM TRA PHƯƠNG THỨC THANH TOÁN
+            if (!orderId) {
+                throw new Error("Không lấy được mã đơn hàng vừa tạo!");
+            }
+
+
             if (paymentMethod === 2) {
-                // Thanh toán Online (VNPay Sandbox)
-                // Nếu API trả về đường dẫn URL thanh toán VNPay Sandbox (ví dụ: response.data.paymentUrl)
-                const paymentUrl = response.data?.paymentUrl || response.paymentUrl;
+
+                const vnpayRes = await GetVNPayPaymentUrlService(orderId, token);
+
+                const paymentUrl = vnpayRes.data?.paymentUrl || vnpayRes.paymentUrl;
 
                 if (paymentUrl) {
-                    // Chuyển hướng người dùng sang cổng thanh toán VNPay Sandbox
+
                     window.location.href = paymentUrl;
                 } else {
-                    alert("Đã tạo đơn hàng nhưng chưa lấy được đường dẫn thanh toán VNPay!");
-                    router.push("/");
+                    alert("Đã tạo đơn hàng nhưng không lấy được đường dẫn thanh toán VNPay!");
+                    router.push("/orders");
                 }
             } else {
-                // Thanh toán tiền mặt (COD) -> Chuyển hướng về trang chủ hoặc trang thành công
-                router.push("/");
+
+                alert("Đặt hàng thành công!");
+                router.push("/orders");
             }
         } catch (error) {
             console.error("Lỗi đặt hàng:", error);

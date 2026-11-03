@@ -44,7 +44,7 @@ export default function ProductFeature({
 
     return (
         <div className="w-full max-w-7xl mx-auto p-4 rounded-2xl shadow-sm bg-gray-100 mt-[30px]">
-            {/* Header Tabs */}
+
             <div className="flex border-b border-gray-200 mb-4">
                 <button
                     onClick={() => setActiveTab("tab1")}

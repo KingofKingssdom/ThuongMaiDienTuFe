@@ -43,3 +43,17 @@ export async function GetOrdersService(token: string) {
         throw error;
     }
 }
+
+export async function GetVNPayPaymentUrlService(orderId: number, token: string) {
+    try {
+        const response = await axios.get(`${baseUrl}/payment/checkout/vnpay/${orderId}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi lấy link thanh toán VNPay:", error);
+        throw error;
+    }
+}

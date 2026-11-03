@@ -5,11 +5,8 @@ import Link from "next/link";
 import { GetProductById } from "@/app/Services/ProductService";
 import { CreateCartItemService } from "@/app/Services/CartItem";
 import {
-    MdStar,
-    MdFavoriteBorder,
     MdChatBubbleOutline,
     MdInfoOutline,
-    MdCompareArrows,
     MdCheckCircle,
     MdClose,
     MdShoppingCart
@@ -44,15 +41,14 @@ export default function ProductDetailPage() {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
-    // State lựa chọn phiên bản & màu sắc
+
     const [selectedStorage, setSelectedStorage] = useState<string>("");
     const [selectedColor, setSelectedColor] = useState<string>("");
     const [activeVariant, setActiveVariant] = useState<Variant | null>(null);
 
-    // State hiển thị Modal Thông số kỹ thuật
     const [isSpecsModalOpen, setIsSpecsModalOpen] = useState(false);
 
-    // Gọi API lấy chi tiết sản phẩm
+
     useEffect(() => {
         if (!id) return;
         const fetchProductDetail = async () => {
@@ -85,7 +81,6 @@ export default function ProductDetailPage() {
         if (found) setActiveVariant(found);
     };
 
-    // 1. Hàm Thêm vào giỏ hàng (Bình thường)
     const handleAddToCart = async () => {
         if (!activeVariant) {
             alert("Vui lòng chọn phiên bản sản phẩm!");
@@ -112,7 +107,7 @@ export default function ProductDetailPage() {
         }
     };
 
-    // 2. Hàm Mua ngay (Thêm vào giỏ rồi sang thẳng trang Checkout)
+
     const handleBuyNow = async () => {
         if (!activeVariant) {
             alert("Vui lòng chọn phiên bản sản phẩm!");
@@ -131,15 +126,13 @@ export default function ProductDetailPage() {
                 token
             );
 
-            // Lấy ID của CartItem vừa được tạo từ response trả về của backend
+
             const cartItemId = res.data?.id || res.id;
 
             if (cartItemId) {
-                // Lưu vào localStorage để trang Checkout nhận diện sản phẩm cần thanh toán
+
                 localStorage.setItem("checkoutItemIds", JSON.stringify([cartItemId]));
             }
-
-            // Chuyển hướng sang trang thanh toán (/checkout)
             router.push("/checkout");
         } catch (error) {
             console.error("Lỗi Mua ngay:", error);
@@ -211,7 +204,7 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {/* CỘT PHẢI: Giá, Phiên bản, Màu sắc & Nút mua hàng */}
+
                     <div className="lg:col-span-7 space-y-4">
 
                         <div className="bg-white p-4 rounded-2xl shadow-xs border border-gray-200 flex flex-wrap items-baseline gap-3">
@@ -225,7 +218,7 @@ export default function ProductDetailPage() {
                             )}
                         </div>
 
-                        {/* Chọn Phiên bản (Storage) */}
+
                         <div className="bg-white p-4 rounded-2xl shadow-xs border border-gray-200">
                             <label className="block text-xs font-bold text-gray-700 uppercase mb-2">Chọn phiên bản dung lượng</label>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -254,7 +247,7 @@ export default function ProductDetailPage() {
                             </div>
                         </div>
 
-                        {/* Chọn Màu sắc */}
+
                         <div className="bg-white p-4 rounded-2xl shadow-xs border border-gray-200">
                             <label className="block text-xs font-bold text-gray-700 uppercase mb-2">Chọn màu sắc</label>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -286,7 +279,7 @@ export default function ProductDetailPage() {
                             </div>
                         </div>
 
-                        {/* Nút Mua ngay / Thêm vào giỏ hàng (Desktop) */}
+
                         <div className="hidden md:flex gap-3 pt-2">
                             <button
                                 onClick={handleBuyNow}
@@ -310,7 +303,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {/* THANH CỐ ĐỊNH DƯỚI CÙNG CHO MOBILE */}
+
             <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 flex items-center justify-between gap-3 md:hidden z-30 shadow-lg">
                 <div>
                     <div className="text-sm font-extrabold text-red-600">
@@ -338,7 +331,7 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {/* MODAL THÔNG SỐ KỸ THUẬT */}
+
             {isSpecsModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/50 animate-in fade-in duration-200">
                     <div className="bg-white w-full max-w-lg h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">

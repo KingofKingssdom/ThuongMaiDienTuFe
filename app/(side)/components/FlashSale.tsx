@@ -17,7 +17,8 @@ export default function FlashSale() {
     const [product, setProduct] = useState<Product[]>();
 
     const fetchProduct = async () => {
-        const data = await GetAllProductService();
+        const token = localStorage.getItem("token") || "";
+        const data = await GetAllProductService(token);
         setProduct(data.data);
     }
 

@@ -58,12 +58,13 @@ export default function SpecificationAdminPage() {
     const loadData = async () => {
         setLoading(true);
         try {
+            const token = localStorage.getItem("token") || "";
             const [groupRes, attrRes, valRes, catRes, prodRes] = await Promise.all([
-                GetAllGroupsService(),
-                GetAllAttributesService(),
-                GetAllValuesService(),
-                GetAllCategoriesService(),
-                GetAllProductService()
+                GetAllGroupsService(token),
+                GetAllAttributesService(token),
+                GetAllValuesService(token),
+                GetAllCategoriesService(token),
+                GetAllProductService(token)
             ]);
             setGroups(groupRes.data || groupRes || []);
             setAttributes(attrRes.data || attrRes || []);

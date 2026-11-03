@@ -3,9 +3,13 @@ import axios from "axios";
 const baseUrl = "https://localhost:7276/api";
 
 // 1. Lấy tất cả danh mục
-export async function GetAllCategoriesService() {
+export async function GetAllCategoriesService(token: string) {
     try {
-        const response = await axios.get(`${baseUrl}/Category`);
+        const response = await axios.get(`${baseUrl}/Category`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Lỗi khi lấy danh sách danh mục:", error);

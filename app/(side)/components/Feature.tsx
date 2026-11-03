@@ -25,10 +25,11 @@ export default function FeatureContainer() {
     const [FeatureSound, setFeatureSound] = useState<Product[]>([]);
     const [FeatureWatch, setFeatureWatch] = useState<Product[]>([]);
     const [FeatureTivi, setFeatureTivi] = useState<Product[]>([]);
-
+    const token = localStorage.getItem("token") || "";
     const fetchFeatureMobile = async () => {
         try {
-            const res = await GetAllProductByIsFeature(1);
+
+            const res = await GetAllProductByIsFeature(1, token);
             setFeatureMobile(res.data || []);
         } catch (error) {
             console.error("Lỗi khi tải điện thoại nổi bật:", error);
@@ -37,7 +38,7 @@ export default function FeatureContainer() {
 
     const fetchFeatureTablet = async () => {
         try {
-            const res = await GetAllProductByIsFeature(2);
+            const res = await GetAllProductByIsFeature(2, token);
             setFeatureTablet(res.data || []);
         } catch (error) {
             console.error("Lỗi khi tải tablet nổi bật:", error);
@@ -46,7 +47,7 @@ export default function FeatureContainer() {
 
     const fetchFeatureSound = async () => {
         try {
-            const res = await GetAllProductByIsFeature(3);
+            const res = await GetAllProductByIsFeature(3, token);
             setFeatureSound(res.data || []);
         } catch (error) {
             console.error("Lỗi khi tải sound nổi bật:", error);
@@ -54,7 +55,7 @@ export default function FeatureContainer() {
     };
     const fetchFeatureWatch = async () => {
         try {
-            const res = await GetAllProductByIsFeature(4);
+            const res = await GetAllProductByIsFeature(4, token);
             setFeatureWatch(res.data || []);
         } catch (error) {
             console.error("Lỗi khi tải sound nổi bật:", error);
@@ -62,7 +63,7 @@ export default function FeatureContainer() {
     };
     const fetchFeatureTivi = async () => {
         try {
-            const res = await GetAllProductByIsFeature(6);
+            const res = await GetAllProductByIsFeature(6, token);
             setFeatureTivi(res.data || []);
         } catch (error) {
             console.error("Lỗi khi tải tivi nổi bật:", error);

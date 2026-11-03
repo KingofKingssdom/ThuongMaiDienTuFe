@@ -4,9 +4,13 @@ import axios from "axios";
 const baseUrl = "https://localhost:7276/api";
 
 // 1. Lấy tất cả biến thể (hoặc lấy theo ProductId nếu backend hỗ trợ)
-export async function GetAllVariantsService() {
+export async function GetAllVariantsService(token: string) {
     try {
-        const response = await axios.get(`${baseUrl}/ProductVariant`);
+        const response = await axios.get(`${baseUrl}/ProductVariant`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Lỗi khi lấy danh sách biến thể:", error);
@@ -15,9 +19,13 @@ export async function GetAllVariantsService() {
 }
 
 // 2. Lấy biến thể theo ProductId
-export async function GetVariantsByProductIdService(productId: number) {
+export async function GetVariantsByProductIdService(productId: number, token: string) {
     try {
-        const response = await axios.get(`${baseUrl}/ProductVariant/product/${productId}`);
+        const response = await axios.get(`${baseUrl}/ProductVariant/product/${productId}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Lỗi khi lấy biến thể theo sản phẩm:", error);

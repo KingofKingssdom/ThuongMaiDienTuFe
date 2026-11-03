@@ -66,10 +66,11 @@ export default function ProductAdminPage() {
     const loadData = async () => {
         setLoading(true);
         try {
+            const token = localStorage.getItem("token") || "";
             const [prodRes, brandRes, catRes] = await Promise.all([
-                GetAllProductService(),
-                GetAllBrandsService(),
-                GetAllCategoriesService()
+                GetAllProductService(token),
+                GetAllBrandsService(token),
+                GetAllCategoriesService(token)
             ]);
 
             setProducts(prodRes.data || prodRes || []);
@@ -160,7 +161,8 @@ export default function ProductAdminPage() {
     // Xem danh sách biến thể của sản phẩm
     const handleViewVariants = async (productId: number) => {
         try {
-            const res = await GetVariantsByProductIdService(productId);
+            const token = localStorage.getItem("token") || "";
+            const res = await GetVariantsByProductIdService(productId, token);
             setSelectedProductVariants(res.data || res || []);
             setIsVariantModalOpen(true);
         } catch (error) {

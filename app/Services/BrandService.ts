@@ -1,10 +1,13 @@
 import axios from "axios";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-export async function GetAllBrandByCategoryId(categoryId: number) {
+export async function GetAllBrandByCategoryId(categoryId: number, token: string) {
     try {
         const response = await axios.get(`${baseUrl}/Brand/category`, {
             params: {
                 categoryId: categoryId
+            },
+            headers: {
+                "Authorization": `Bearer ${token}`
             }
 
         });
@@ -16,9 +19,13 @@ export async function GetAllBrandByCategoryId(categoryId: number) {
 }
 
 // 1. Lấy tất cả thương hiệu
-export async function GetAllBrandsService() {
+export async function GetAllBrandsService(token: string) {
     try {
-        const response = await axios.get(`${baseUrl}/Brand`);
+        const response = await axios.get(`${baseUrl}/Brand`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Lỗi khi lấy danh sách thương hiệu:", error);

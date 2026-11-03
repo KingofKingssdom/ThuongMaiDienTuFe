@@ -3,9 +3,13 @@ import axios from "axios";
 const baseUrl = "https://localhost:7276/api";
 
 // --- SPECIFICATION GROUPS ---
-export async function GetAllGroupsService() {
+export async function GetAllGroupsService(token: string) {
     try {
-        const res = await axios.get(`${baseUrl}/SpecificationGroup`);
+        const res = await axios.get(`${baseUrl}/SpecificationGroup`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         return res.data;
     }
     catch (error) {
@@ -57,8 +61,12 @@ export async function DeleteGroupService(id: number, token: string) {
 }
 
 // --- SPECIFICATION ATTRIBUTES ---
-export async function GetAllAttributesService() {
-    const res = await axios.get(`${baseUrl}/SpecificationAttribute`);
+export async function GetAllAttributesService(token: string) {
+    const res = await axios.get(`${baseUrl}/SpecificationAttribute`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     return res.data;
 }
 
@@ -84,8 +92,12 @@ export async function DeleteAttributeService(id: number, token: string) {
 }
 
 // --- SPECIFICATION VALUES ---
-export async function GetAllValuesService() {
-    const res = await axios.get(`${baseUrl}/SpecificationValue`);
+export async function GetAllValuesService(token: string) {
+    const res = await axios.get(`${baseUrl}/SpecificationValue`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     return res.data;
 }
 

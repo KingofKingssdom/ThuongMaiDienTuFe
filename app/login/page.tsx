@@ -20,11 +20,11 @@ function getRoleFromToken(token: string): string {
 export default function LoginPage() {
     const [isLogin, setIsLogin] = useState(true);
 
-    // Form Login states
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    // Form Register states
+
     const [fullName, setFullName] = useState("");
     const [regEmail, setRegEmail] = useState("");
     const [regPassword, setRegPassword] = useState("");
@@ -33,7 +33,7 @@ export default function LoginPage() {
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
 
-    // Xử lý Đăng nhập
+
     const handleLoginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -42,24 +42,24 @@ export default function LoginPage() {
         try {
             const res = await AuthService.login({ email, password });
 
-            // Kiểm tra xem API gọi thành công và có data trả về không
+
             if (res.success && res.data) {
                 const { accessToken, user } = res.data;
 
-                // 1. Lưu AccessToken vào localStorage
+
                 localStorage.setItem("token", accessToken);
                 if (user?.fullName) {
                     localStorage.setItem("userName", user.fullName);
                 }
 
-                // 2. Lấy Role (ưu tiên lấy từ object user nếu có, nếu không thì bóc từ token JWT)
+
                 const role = user?.role || getRoleFromToken(accessToken);
 
-                // 3. Phân quyền chuyển hướng dựa vào Role
+
                 if (role.toLowerCase() === "admin") {
-                    router.push("/dashboard"); // Chuyển đến trang Admin
+                    router.push("/dashboard");
                 } else {
-                    router.push("/"); // Về trang chủ cho User thường
+                    router.push("/");
                 }
             } else {
                 setErrorMessage(res.message || "Đăng nhập thất bại.");
@@ -72,7 +72,6 @@ export default function LoginPage() {
         }
     };
 
-    // Xử lý Đăng ký
     const handleRegisterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -87,7 +86,7 @@ export default function LoginPage() {
 
             if (res.success !== false) {
                 alert("Đăng ký thành công! Vui lòng đăng nhập.");
-                setIsLogin(true); // Chuyển về màn hình login
+                setIsLogin(true);
             } else {
                 setErrorMessage(res.message || "Đăng ký thất bại.");
             }

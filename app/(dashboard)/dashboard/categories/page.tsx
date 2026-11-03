@@ -28,7 +28,8 @@ export default function CategoryAdminPage() {
     const loadCategories = async () => {
         setLoading(true);
         try {
-            const res = await GetAllCategoriesService();
+            const token = localStorage.getItem("token") || "";
+            const res = await GetAllCategoriesService(token);
             setCategories(res.data || res || []);
         } catch (error) {
             console.error("Lỗi tải danh mục:", error);

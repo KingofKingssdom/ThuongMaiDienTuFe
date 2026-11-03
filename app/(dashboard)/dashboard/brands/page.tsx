@@ -38,9 +38,10 @@ export default function BrandAdminPage() {
     const loadData = async () => {
         setLoading(true);
         try {
+            const token = localStorage.getItem("token") || "";
             const [brandRes, catRes] = await Promise.all([
-                GetAllBrandsService(),
-                GetAllCategoriesService()
+                GetAllBrandsService(token),
+                GetAllCategoriesService(token)
             ]);
             setBrands(brandRes.data || brandRes || []);
             setCategories(catRes.data || catRes || []);

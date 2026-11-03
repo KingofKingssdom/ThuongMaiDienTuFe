@@ -48,7 +48,15 @@ export default function ProductDetailPage() {
 
     const [isSpecsModalOpen, setIsSpecsModalOpen] = useState(false);
 
-
+    const checkAuthAndGetToken = () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Vui lòng đăng nhập để tiếp tục!");
+            router.push("/login");
+            return null;
+        }
+        return token;
+    };
     useEffect(() => {
         if (!id) return;
         const fetchProductDetail = async () => {
@@ -87,9 +95,10 @@ export default function ProductDetailPage() {
             return;
         }
 
-        setSubmitting(true);
-        const token = localStorage.getItem("token") || "";
+        const token = checkAuthAndGetToken();
+        if (!token) return; // Nếu chưa đăng nhập sẽ dừng lại và chuyển trang
 
+        setSubmitting(true);
         try {
             await CreateCartItemService(
                 {
@@ -114,9 +123,10 @@ export default function ProductDetailPage() {
             return;
         }
 
-        setSubmitting(true);
-        const token = localStorage.getItem("token") || "";
+        const token = checkAuthAndGetToken();
+        if (!token) return; // Nếu chưa đăng nhập sẽ dừng lại và chuyển trang
 
+        setSubmitting(true);
         try {
             const res = await CreateCartItemService(
                 {
@@ -126,11 +136,9 @@ export default function ProductDetailPage() {
                 token
             );
 
-
             const cartItemId = res.data?.id || res.id;
 
             if (cartItemId) {
-
                 localStorage.setItem("checkoutItemIds", JSON.stringify([cartItemId]));
             }
             router.push("/checkout");
@@ -333,7 +341,7 @@ export default function ProductDetailPage() {
 
 
             {isSpecsModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/50 animate-in fade-in duration-200">
+                <div className="fixed inset-0 z-120 flex items-center justify-end bg-black/50 animate-in fade-in duration-200">
                     <div className="bg-white w-full max-w-lg h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">
                         <div className="h-14 bg-red-600 text-white flex items-center justify-between px-6 shrink-0">
                             <h2 className="font-bold text-base">Thông số kĩ thuật</h2>
@@ -347,7 +355,7 @@ export default function ProductDetailPage() {
 
                         <div className="p-6 flex-1 overflow-y-auto space-y-6 text-sm">
                             <div>
-                                <h3 className="font-bold text-gray-900 border-b border-gray-200 pb-2 mb-3">Cấu hình & Bộ nhớ[cite: 10]</h3>
+                                <h3 className="font-bold text-gray-900 border-b border-gray-200 pb-2 mb-3">Cấu hình & Bộ nhớ</h3>
                                 <div className="space-y-2 text-xs">
                                     <div className="flex justify-between py-1.5 border-b border-gray-100"><span className="text-gray-500">Bộ nhớ trong</span><span className="font-medium text-right">{selectedStorage || "N/A"}</span></div>
                                     <div className="flex justify-between py-1.5 border-b border-gray-100"><span className="text-gray-500">Màu sắc</span><span className="font-medium text-right">{selectedColor || "N/A"}</span></div>

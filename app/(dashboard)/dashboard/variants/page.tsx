@@ -48,7 +48,8 @@ export default function VariantAdminPage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await GetAllProductService();
+                const token = localStorage.getItem("token") || "";
+                const res = await GetAllProductService(token);
                 const list = res.data || res || [];
                 setProducts(list);
                 if (list.length > 0) {
@@ -65,7 +66,8 @@ export default function VariantAdminPage() {
     const loadVariants = async (prodId: number) => {
         setLoading(true);
         try {
-            const res = await GetVariantsByProductIdService(prodId);
+            const token = localStorage.getItem("token") || "";
+            const res = await GetVariantsByProductIdService(prodId, token);
             setVariants(res.data || res || []);
         } catch (error) {
             console.error("Lỗi tải biến thể:", error);

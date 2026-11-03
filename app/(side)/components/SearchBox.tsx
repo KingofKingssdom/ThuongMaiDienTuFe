@@ -26,8 +26,8 @@ export default function SearchBox() {
             }
 
             try {
-
-                const response = await GetProductByName(keyword);
+                const token = localStorage.getItem("token") || "";
+                const response = await GetProductByName(keyword, token);
                 const data = await response;
                 setResults(data.data || []);
                 setIsOpen(true);

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://localhost:7276/api";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 // --- SPECIFICATION GROUPS ---
 export async function GetAllGroupsService(token: string) {

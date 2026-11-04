@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://localhost:7276/api";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 // 1. Lấy tất cả danh mục
 export async function GetAllCategoriesService(token: string) {

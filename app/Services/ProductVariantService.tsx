@@ -1,7 +1,7 @@
 // app/Services/VariantService.ts
 import axios from "axios";
 
-const baseUrl = "https://localhost:7276/api";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 // 1. Lấy tất cả biến thể (hoặc lấy theo ProductId nếu backend hỗ trợ)
 export async function GetAllVariantsService(token: string) {

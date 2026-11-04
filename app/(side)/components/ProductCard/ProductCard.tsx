@@ -8,7 +8,7 @@ interface ProductVariant {
 interface Product {
     id?: number;
     productName: string;
-    Ddescription: string;
+    description: string;
     urlImageProduct: string;
     isFeatured: boolean;
     isOnPromotion: boolean;
@@ -47,7 +47,7 @@ export default function ProductCard({ product }: ProductProps) {
                     )}
                 </div>
                 <div>
-                    <p className="bg-gray-50 text-gray-600 text-[11px] p-2 rounded-lg mb-3 line-clamp-2 min-h-[50px]"> {product?.Ddescription}</p>
+                    <p className="bg-gray-50 text-gray-600 text-[11px] p-2 rounded-lg mb-3 line-clamp-2 min-h-[50px]"> {product?.description}</p>
                 </div>
             </Link>
         </>

@@ -38,7 +38,7 @@ export default function ProductCard({ product }: ProductProps) {
                 </div>
                 <div className="flex items-center">
                     <p className="text-red-600 font-semibold text-[20px] mr-[5px]">
-                        {currentPrice ? `${currentPrice.toLocaleString("vi-VN")}₫` : "Liên hệ"}
+                        {currentPrice ? `${currentPrice.toLocaleString("vi-VN")}₫` : "Giá liên hệ"}
                     </p>
                     {originPrice && originPrice > (currentPrice || 0) && (
                         <p className="text-gray-500 text-[13px] line-through">
@@ -47,7 +47,7 @@ export default function ProductCard({ product }: ProductProps) {
                     )}
                 </div>
                 <div>
-                    <p className="bg-gray-50 text-gray-600 text-[11px] p-2 rounded-lg mb-3 line-clamp-2 min-h-[50px]"> Thông tin mô tả thêm về khuyễn mãi</p>
+                    <p className="bg-gray-50 text-gray-600 text-[11px] p-2 rounded-lg mb-3 line-clamp-2 min-h-[50px]"> {product?.Ddescription}</p>
                 </div>
             </Link>
         </>

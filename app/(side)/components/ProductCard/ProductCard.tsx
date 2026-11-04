@@ -1,9 +1,9 @@
-
 import Link from "next/link"
-// interface ProductVariant {
-//     currentPrice: number;
-//     originPrice?: number;
-// }
+
+interface ProductVariant {
+    currentPrice: number;
+    originPrice?: number;
+}
 
 interface Product {
     id?: number;
@@ -12,15 +12,21 @@ interface Product {
     urlImageProduct: string;
     isFeatured: boolean;
     isOnPromotion: boolean;
-    // productVariant?: ProductVariant[]
+    productVariants?: ProductVariant[];
 }
 
-// 2. Khai báo props nhận vào có chứa object product
+
 interface ProductProps {
     product?: Product;
 }
+
 export default function ProductCard({ product }: ProductProps) {
     const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
+
+    const firstVariant = product?.productVariants?.[0];
+    const currentPrice = firstVariant?.currentPrice;
+    const originPrice = firstVariant?.originPrice;
+
     return (
         <>
             <Link href={`products/${product?.id}`} className="overflow-hidden group bg-white max-w-[225px] block p-[10px] rounded-lg shadow-[0_0_5px_3px] shadow-[#d5d8df] mt-[20px] ml-[7px] mr-[7px]">
@@ -31,8 +37,14 @@ export default function ProductCard({ product }: ProductProps) {
                     {product?.productName}
                 </div>
                 <div className="flex items-center">
-                    <p className="text-red-600 font-semibold text-[20px] mr-[5px]">10000</p>
-                    <p className="text-gray-500 text-[13px] line-through">50000</p>
+                    <p className="text-red-600 font-semibold text-[20px] mr-[5px]">
+                        {currentPrice ? `${currentPrice.toLocaleString("vi-VN")}₫` : "Liên hệ"}
+                    </p>
+                    {originPrice && originPrice > (currentPrice || 0) && (
+                        <p className="text-gray-500 text-[13px] line-through">
+                            {originPrice.toLocaleString("vi-VN")}₫
+                        </p>
+                    )}
                 </div>
                 <div>
                     <p className="bg-gray-50 text-gray-600 text-[11px] p-2 rounded-lg mb-3 line-clamp-2 min-h-[50px]"> Thông tin mô tả thêm về khuyễn mãi</p>

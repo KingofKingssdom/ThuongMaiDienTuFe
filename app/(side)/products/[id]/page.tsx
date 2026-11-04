@@ -61,7 +61,8 @@ export default function ProductDetailPage() {
         if (!id) return;
         const fetchProductDetail = async () => {
             try {
-                const res = await GetProductById(id);
+                const token = localStorage.getItem("token") || "";
+                const res = await GetProductById(id, token);
                 const prodData = res.data.data || res.data;
                 setProduct(prodData);
 

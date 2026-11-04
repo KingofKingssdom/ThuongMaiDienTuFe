@@ -34,9 +34,10 @@ export default function ProductList({ categoryId, title }: ProductListProps) {
     const [selectedBrandId, setSelectedBrandId] = useState<number | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
 
-    const token = localStorage.getItem("token") || "";
+
     const fetchAllBrandByCategory = async () => {
         try {
+            const token = typeof window !== 'undefined' ? localStorage.getItem("token") || "" : "";
             const res = await GetAllBrandByCategoryId(categoryId, token);
             setBrand(res.data || []);
         } catch (error) {
@@ -47,7 +48,7 @@ export default function ProductList({ categoryId, title }: ProductListProps) {
 
     const fetchProducts = async (catId: number, brandId: number | null) => {
         try {
-
+            const token = typeof window !== 'undefined' ? localStorage.getItem("token") || "" : "";
             const res = await GetAllProductByCategoryAndBrand(catId, brandId, token);
             setProducts(res.data || []);
         } catch (error) {

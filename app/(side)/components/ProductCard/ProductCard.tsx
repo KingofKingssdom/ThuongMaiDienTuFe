@@ -20,12 +20,12 @@ interface ProductProps {
     product?: Product;
 }
 export default function ProductCard({ product }: ProductProps) {
-
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     return (
         <>
             <Link href={`products/${product?.id}`} className="overflow-hidden group bg-white max-w-[225px] block p-[10px] rounded-lg shadow-[0_0_5px_3px] shadow-[#d5d8df] mt-[20px] ml-[7px] mr-[7px]">
                 <div className="w-[150px] h-[150px] mx-auto">
-                    <img src={`https://localhost:7276/${product?.urlImageProduct}`} alt="" className="w-[100%] h-[100%] object-cover transition-transform duration-300 group-hover:scale-110" />
+                    <img src={`${imageBaseUrl}/${product?.urlImageProduct}`} alt="" className="w-[100%] h-[100%] object-cover transition-transform duration-300 group-hover:scale-110" />
                 </div>
                 <div className="min-h-[70px] mt-[10px] font-semibold">
                     {product?.productName}

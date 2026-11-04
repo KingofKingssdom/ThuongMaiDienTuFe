@@ -22,6 +22,7 @@ interface Brand {
 }
 
 export default function BrandAdminPage() {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const [viewMode, setViewMode] = useState<"list" | "create" | "edit">("list");
     const [brands, setBrands] = useState<Brand[]>([]);
     const [categories, setCategories] = useState<Category[]>([]); // State chứa danh sách Category
@@ -181,7 +182,7 @@ export default function BrandAdminPage() {
                                                 <td className="py-3 px-4">
                                                     <div className="w-16 h-10 rounded-lg border border-gray-100 p-1 flex items-center justify-center bg-white">
                                                         <img
-                                                            src={`https://localhost:7276/${b.urlImageBrand}`}
+                                                            src={`${imageBaseUrl}/${b.urlImageBrand}`}
                                                             alt={b.brandName}
                                                             className="max-h-full object-contain"
                                                         />

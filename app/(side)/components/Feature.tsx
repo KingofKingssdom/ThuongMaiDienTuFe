@@ -20,6 +20,7 @@ interface Product {
 }
 
 export default function FeatureContainer() {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const [FeatureMobile, setFeatureMobile] = useState<Product[]>([]);
     const [FeatureTablet, setFeatureTablet] = useState<Product[]>([]);
     const [FeatureSound, setFeatureSound] = useState<Product[]>([]);
@@ -97,7 +98,7 @@ export default function FeatureContainer() {
                 oldPrice: oldPriceFormatted,
                 image: p.urlImageProduct.startsWith("http")
                     ? p.urlImageProduct
-                    : `https://localhost:7276/${p.urlImageProduct}`,
+                    : `${imageBaseUrl}/${p.urlImageProduct}`,
                 rating: 5,
                 promoText: p.description,
             };

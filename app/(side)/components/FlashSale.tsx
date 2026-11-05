@@ -8,7 +8,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 interface Product {
     Id: number,
     productName: string
-    Ddescription: string
+    description: string
     urlImageProduct: string,
     isFeatured: boolean,
     isOnPromotion: boolean

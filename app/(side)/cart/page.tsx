@@ -21,6 +21,7 @@ interface CartItem {
 }
 
 export default function Cart() {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const router = useRouter();
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -161,7 +162,7 @@ export default function Cart() {
                                             />
                                             <div className="w-20 h-20 rounded-xl border border-gray-100 p-2 flex items-center justify-center bg-gray-50 shrink-0">
                                                 <img
-                                                    src={imageUrl ? `https://localhost:7276/${imageUrl}` : "https://via.placeholder.com/150"}
+                                                    src={imageUrl ? `${imageBaseUrl}/${imageUrl}` : "https://via.placeholder.com/150"}
                                                     alt={variant?.productName || "Sản phẩm"}
                                                     className="max-h-full object-contain"
                                                 />

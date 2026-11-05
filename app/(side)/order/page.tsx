@@ -34,6 +34,7 @@ interface Order {
 }
 
 export default function OrdersPage() {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -122,7 +123,7 @@ export default function OrdersPage() {
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-16 h-16 rounded-xl border border-gray-100 p-1 flex items-center justify-center bg-gray-50 shrink-0">
                                                         <img
-                                                            src={item.urlProductColor ? `https://localhost:7276/${item.urlProductColor}` : "https://via.placeholder.com/150"}
+                                                            src={item.urlProductColor ? `${imageBaseUrl}/${item.urlProductColor}` : "https://via.placeholder.com/150"}
                                                             alt={item.productName || "Sản phẩm"}
                                                             className="max-h-full object-contain"
                                                         />

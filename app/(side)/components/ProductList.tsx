@@ -30,6 +30,7 @@ interface ProductListProps {
 }
 
 export default function ProductList({ categoryId, title }: ProductListProps) {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const [brand, setBrand] = useState<Brand[]>([]);
     const [selectedBrandId, setSelectedBrandId] = useState<number | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
@@ -91,7 +92,7 @@ export default function ProductList({ categoryId, title }: ProductListProps) {
                                 }`}
                         >
                             <img
-                                src={`https://localhost:7276/${b.urlImageBrand}`}
+                                src={`${imageBaseUrl}/${b.urlImageBrand}`}
                                 alt={b.brandName || "Brand logo"}
                                 className="max-w-full max-h-full object-contain"
                             />
@@ -109,7 +110,7 @@ export default function ProductList({ categoryId, title }: ProductListProps) {
                             <Link href={`products/${p.id}`} key={p.id} className="border border-gray-200 rounded-xl p-3 bg-white shadow-sm flex flex-col justify-between">
                                 <div className="w-full h-36 md:h-40 flex items-center justify-center mb-2">
                                     <img
-                                        src={`https://localhost:7276/${p.urlImageProduct}`}
+                                        src={`${imageBaseUrl}/${p.urlImageProduct}`}
                                         alt={p.productName}
                                         className="max-h-full object-contain"
                                     />

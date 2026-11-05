@@ -42,6 +42,7 @@ interface Product {
 }
 
 export default function ProductAdminPage() {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const [viewMode, setViewMode] = useState<"list" | "create" | "edit">("list");
     const [products, setProducts] = useState<Product[]>([]);
     const [brands, setBrands] = useState<Brand[]>([]);
@@ -226,7 +227,7 @@ export default function ProductAdminPage() {
                                                 <td className="py-3 px-4">
                                                     <div className="w-12 h-12 rounded-lg border border-gray-100 p-1 flex items-center justify-center bg-white">
                                                         <img
-                                                            src={`https://localhost:7276/${p.urlImageProduct}`}
+                                                            src={`${imageBaseUrl}/${p.urlImageProduct}`}
                                                             alt={p.productName}
                                                             className="max-h-full object-contain"
                                                         />

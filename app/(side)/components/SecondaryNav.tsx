@@ -4,6 +4,7 @@ import { BiCategory } from "react-icons/bi";
 import { TbInvoice } from "react-icons/tb";
 import { FaRegUserCircle } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
+import Link from "next/link";
 interface SecondaryProps {
     onOpenCategory?: () => void;
 }
@@ -31,14 +32,15 @@ export default function Secondary({ onOpenCategory }: SecondaryProps) {
             </div>
 
 
-            <div
+            <Link
+                href="/order"
                 onClick={() => handleTabClick("order")}
                 className={`cursor-pointer w-[100px] flex flex-col items-center justify-center py-1 transition-colors ${activeTab === "order" ? "text-red-600" : "text-gray-600 hover:text-red-600"
                     }`}
             >
                 <TbInvoice className="h-[20px] w-[20px] mx-auto" />
                 <p className="w-[80px] text-center mx-auto font-semibold text-[13px]">Đơn hàng</p>
-            </div>
+            </Link>
 
 
             <div

@@ -5,7 +5,7 @@ export default function Laptop() {
             <div className="mx-auto w-[98%] lg:w-[80%] 2xl:w-[70%]">
                 <ProductList
                     title="Laptop"
-                    categoryId={7}
+                    categoryId={3}
                 />
             </div>
         </>

@@ -37,7 +37,7 @@ export default function ProductCard({ product }: ProductProps) {
                     {product?.productName}
                 </div>
                 <div className="flex items-center">
-                    <p className="text-red-600 font-semibold text-[20px] mr-[5px]">
+                    <p className="text-red-600 font-semibold text-[13px] mr-[5px]">
                         {currentPrice ? `${currentPrice.toLocaleString("vi-VN")}₫` : "Giá liên hệ"}
                     </p>
                     {originPrice && originPrice > (currentPrice || 0) && (

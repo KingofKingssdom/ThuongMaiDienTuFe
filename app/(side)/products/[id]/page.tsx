@@ -33,6 +33,7 @@ interface Product {
 }
 
 export default function ProductDetailPage() {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const params = useParams();
     const router = useRouter();
     const id = Number(params?.id);
@@ -188,7 +189,7 @@ export default function ProductDetailPage() {
                     <div className="lg:col-span-5 space-y-4">
                         <div className="bg-white p-4 rounded-2xl shadow-xs border border-gray-200 flex items-center justify-center relative">
                             <img
-                                src={`https://localhost:7276/${product.urlImageProduct}`}
+                                src={`${imageBaseUrl}/${product.urlImageProduct}`}
                                 alt={product.productName}
                                 className="max-h-[350px] object-contain"
                             />

@@ -27,6 +27,7 @@ interface ProductVariant {
 }
 
 export default function VariantAdminPage() {
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedProductId, setSelectedProductId] = useState<number | "">("");
 
@@ -34,7 +35,7 @@ export default function VariantAdminPage() {
     const [loading, setLoading] = useState(false);
     const [viewMode, setViewMode] = useState<"list" | "create" | "edit">("list");
 
-    // State form biến thể
+
     const [currentId, setCurrentId] = useState<number | null>(null);
     const [storage, setStorage] = useState("");
     const [originPrice, setOriginPrice] = useState("");
@@ -44,7 +45,7 @@ export default function VariantAdminPage() {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [submitting, setSubmitting] = useState(false);
 
-    // 1. Tải danh sách Product để người dùng chọn
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -62,7 +63,7 @@ export default function VariantAdminPage() {
         fetchProducts();
     }, []);
 
-    // 2. Tải danh sách biến thể mỗi khi `selectedProductId` thay đổi
+
     const loadVariants = async (prodId: number) => {
         setLoading(true);
         try {
@@ -83,7 +84,7 @@ export default function VariantAdminPage() {
         }
     }, [selectedProductId]);
 
-    // Reset form
+
     const resetForm = () => {
         setStorage("");
         setOriginPrice("");
@@ -94,7 +95,7 @@ export default function VariantAdminPage() {
         setCurrentId(null);
     };
 
-    // Mở form sửa
+
     const handleOpenEdit = (v: ProductVariant) => {
         setCurrentId(v.id);
         setStorage(v.storage || "");
@@ -106,7 +107,7 @@ export default function VariantAdminPage() {
         setViewMode("edit");
     };
 
-    // Xử lý Thêm mới / Cập nhật
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!selectedProductId) {
@@ -147,7 +148,7 @@ export default function VariantAdminPage() {
         }
     };
 
-    // Xóa biến thể
+
     const handleDelete = async (id: number) => {
         if (!confirm("Bạn có chắc chắn muốn xóa biến thể này?")) return;
         const token = localStorage.getItem("token") || "";
@@ -164,7 +165,7 @@ export default function VariantAdminPage() {
 
     return (
         <div className="max-w-7xl mx-auto">
-            {/* Header & Thanh chọn Sản phẩm */}
+
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <div>
                     <h1 className="text-xl font-bold text-gray-800">Quản lý Biến thể sản phẩm</h1>
@@ -173,7 +174,7 @@ export default function VariantAdminPage() {
 
                 {viewMode === "list" && (
                     <div className="flex items-center gap-3">
-                        {/* Dropdown chọn Product */}
+
                         <select
                             value={selectedProductId}
                             onChange={(e) => setSelectedProductId(Number(e.target.value))}
@@ -207,7 +208,7 @@ export default function VariantAdminPage() {
                 )}
             </div>
 
-            {/* HIỂN THỊ DANH SÁCH BIẾN THỂ */}
+
             {viewMode === "list" && (
                 <div className="bg-white rounded-2xl shadow-xs border border-gray-100 overflow-hidden">
                     {loading ? (
@@ -236,7 +237,7 @@ export default function VariantAdminPage() {
                                                     {v.urlProductColor ? (
                                                         <div className="w-12 h-10 rounded-lg border border-gray-100 p-1 flex items-center justify-center bg-white">
                                                             <img
-                                                                src={`https://localhost:7276/${v.urlProductColor}`}
+                                                                src={`${imageBaseUrl}/${v.urlProductColor}`}
                                                                 alt={v.colorName}
                                                                 className="max-h-full object-contain"
                                                             />
@@ -286,7 +287,7 @@ export default function VariantAdminPage() {
                 </div>
             )}
 
-            {/* FORM THÊM MỚI / CẬP NHẬT BIẾN THỂ */}
+
             {(viewMode === "create" || viewMode === "edit") && (
                 <div className="max-w-xl bg-white p-6 rounded-2xl shadow-xs border border-gray-100">
                     <h2 className="text-lg font-bold text-gray-800 mb-4">

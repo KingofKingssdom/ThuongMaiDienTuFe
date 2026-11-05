@@ -274,7 +274,7 @@ export default function ProductDetailPage() {
                                         >
                                             <div className="w-10 h-10 rounded-lg border border-gray-200 p-1 flex items-center justify-center bg-white shrink-0">
                                                 <img
-                                                    src={v.urlProductColor ? `https://localhost:7276/${v.urlProductColor}` : `https://localhost:7276/${product.urlImageProduct}`}
+                                                    src={v.urlProductColor ? `${imageBaseUrl}/${v.urlProductColor}` : `https://localhost:7276/${product.urlImageProduct}`}
                                                     alt={v.colorName}
                                                     className="max-h-full object-contain"
                                                 />
